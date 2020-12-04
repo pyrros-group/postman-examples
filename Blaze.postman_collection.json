@@ -1,0 +1,286 @@
+{
+	"info": {
+		"_postman_id": "eea2f433-37aa-4843-9bd5-98ffce0c5ff2",
+		"name": "Blaze",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Client Credentials Authorization",
+			"item": [
+				{
+					"name": "Authorize And Get Access Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "text"
+								},
+								{
+									"key": "scope",
+									"value": "blazeapiv1.programme",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "{{clientId}}",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "{{clientSecret}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://{{baseUrl}}/connect/token",
+							"protocol": "https",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"connect",
+								"token"
+							]
+						},
+						"description": "First step is to retrieve an 'access_token' token for all future requests.  This token expires in 60 minutes.\r\n\r\nOnce you have recieved your token, set it in the Blaze postman environment for future calls."
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Simple Queries",
+			"item": [
+				{
+					"name": "Get all Company Accounts",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "https://{{baseUrl}}/api/v1/accountholders/company",
+							"protocol": "https",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"accountholders",
+								"company"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a Company Account",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\r\n        \"companyName\": \"Postman Company Account\",\r\n        \"countryOfRegistrationCountryCode\": 370,\r\n        \"programmeUid\": \"{{programmeUid}}\",\r\n        \"tradingName\": \"Postman Company Account\",\r\n        \"legalStatus\": \"Private Limited Company\",\r\n        \"companyRegistrationNumber\": \"ABC123456\",\r\n        \"dateOfIncorporation\": \"1990-01-01T00:00:00\",\r\n        \"phoneNumber\": \"+37052142507\",\r\n        \"emailAddress\": \"it@pyrrosgroup.com\",\r\n        \"websiteUrls\": \"https://dev.blaze.financial/apidocs\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{baseUrl}}/api/v1/accountholders/company",
+							"protocol": "https",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"accountholders",
+								"company"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a new EUR Ledger",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"currencyCode\": 978\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{baseUrl}}/api/v1/accountholders/{{accountHolderUid}}/ledgers",
+							"protocol": "https",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"accountholders",
+								"{{accountHolderUid}}",
+								"ledgers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create an IBAN for a Ledger",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "https://{{baseUrl}}/api/v1/ledgers/{{ledgerUid}}/bankaccounts/create",
+							"protocol": "https",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"ledgers",
+								"{{ledgerUid}}",
+								"bankaccounts",
+								"create"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "User Access",
+			"item": [
+				{
+					"name": "Create a new User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstName\": \"Adam\",\r\n  \"lastName\": \"Eve\",\r\n  \"username\": \"{{programmeUid}}.postman.test\",\r\n  \"mobileNumber\": \"+37052142507\",\r\n  \"emailAddress\": \"it@pyrrosgroup.com\",\r\n  \"programmeUid\": \"{{programmeUid}}\",\r\n  \"verifyMobile\": false,\r\n  \"setupGoogleAuthenticate\": true,\r\n  \"verifyIdentity\": true,\r\n  \"suppressWelcomeEmail\": false,\r\n  \"dateOfBirth\": \"1990-01-01\",\r\n  \"roles\": \"ApiUser\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{baseUrl}}/api/v1/users",
+							"protocol": "https",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Give a user Root access to an account",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkNGMEJDQjVBNEZCRkVBQzJCOUU4QTcwREEwMTRGMzlENTZCOTFFNkUiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJ6d3ZMV2stXzZzSzU2S2NOb0JUem5WYTVIbTQifQ.eyJuYmYiOjE1ODQzNzUwMDAsImV4cCI6MTU4NDM3ODYwMCwiaXNzIjoiaHR0cHM6Ly9kZXYuYmxhemUuZmluYW5jaWFsIiwiYXVkIjpbImh0dHBzOi8vZGV2LmJsYXplLmZpbmFuY2lhbC9yZXNvdXJjZXMiLCJibGF6ZWFwaXYxIl0sImNsaWVudF9pZCI6ImI1NGU4NDZiMDc1ZDMyOTA2ZThkNjNhYzYwZDlkNjAxMGU5Zjc3YjZkNzcxOTNmNTEwYTExY2RlNDE3OWQ3NTQiLCJzY29wZSI6WyJibGF6ZWFwaXYxLnByb2dyYW1tZSJdfQ.mvulDcd0_y1o-N3OJDhMDUlu72fYVBx6OxOrB1Lozu3A_x6DnJwGz4yu3a-cTmrvq_7vsAlxYbWllkG7Q2Md3GLz9zvVcOEWGUIysLcYXQ-5KAHsDYK5C0N2quNotZE1EuG9j7So1zNgfSlf6GfkfNw1PZCHmsEU5A-hu7jsm1XXpSuw3HzG3n8F1NJr-LyUTjR75dNwqzVvlf5fBwi13SXR64GdsdrQJ-zbLo-5B1h9aPbfgZ85v9dV54Fvwy9EvP2Byt29Vfv0lFICEWPnavtaHliZnaImQH6Up5n2ihKZkkoyRtIh1zxB7wPXvWoXyFkQn1_brFMF-FcujOUDSg"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"holderUid\": \"{{accountHolderUid}}\",\r\n  \"holderClaim\": \"Root\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://dev.blaze.financial/api/v1/users/{{userUid}}/holderClaims",
+							"protocol": "https",
+							"host": [
+								"dev",
+								"blaze",
+								"financial"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"{{userUid}}",
+								"holderClaims"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
